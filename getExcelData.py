@@ -22,6 +22,7 @@ def getExcelData(pair="USDT_BTC", location="", period=day, start=defStart, end=d
 		outputList.append(outStr)
 
 	with open(location+pair+".csv", 'w') as f:
+		f.write("high, low, open, close, volume, ", period, " ", start, " ", end)
 		for stringlet in outputList:
 			print(str(stringlet))
 			outStringlet = str(stringlet).replace("(", "")
