@@ -1,6 +1,7 @@
 import poloniex
 import time
 import re
+import datetime
 second = 1
 minute = second*60
 hour = minute*60
@@ -9,6 +10,10 @@ month = day*30
 
 defStart = float(time.time()) - (90*day)
 defEnd = time.time()
+def unixToDate(unix):
+	return datetime.datetime.fromtimestamp(
+			int(unix)
+		).strftime('%Y-%m-%d %H:%M:%S')
 def getExcelData(pair="USDT_BTC", location="", period=day, start=defStart, end=defEnd):
 	polo = poloniex.Poloniex(extend=True)
 	if location == "C:/":
@@ -22,7 +27,9 @@ def getExcelData(pair="USDT_BTC", location="", period=day, start=defStart, end=d
 		outputList.append(outStr)
 
 	with open(location+pair+".csv", 'w') as f:
-		f.write("high, low, open, close, volume, ", period, " ", start, " ", end)
+		f.write("high, low, open, close, volume, "
+			+ str(period)+ ", Start: "+ unixToDate(start)+ ", End: "+ unixToDate(end))
+		f.write("\n")
 		for stringlet in outputList:
 			print(str(stringlet))
 			outStringlet = str(stringlet).replace("(", "")
@@ -30,3 +37,4 @@ def getExcelData(pair="USDT_BTC", location="", period=day, start=defStart, end=d
 			outStringlet = outStringlet.replace(")", "")
 			f.write(outStringlet)
 			f.write("\n")
+getExcelData()
