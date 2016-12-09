@@ -9,7 +9,10 @@ month = day*30
 
 defStart = float(time.time()) - (90*day)
 defEnd = time.time()
+def getExcelData(pair="USDT_BTC", location="", period=day, start=defStart, end=defEnd):
 	polo = poloniex.Poloniex(extend=True)
+	if location == "C:/":
+		print("Saving file to default directory.")
 	btcData = polo.marketChart(pair, day, start, end)
 	print(btcData[0])
 	outputList = []
@@ -18,6 +21,7 @@ defEnd = time.time()
 
 		outputList.append(outStr)
 
+	with open(location+pair+".csv", 'w') as f:
 		for stringlet in outputList:
 			print(str(stringlet))
 			outStringlet = str(stringlet).replace("(", "")
